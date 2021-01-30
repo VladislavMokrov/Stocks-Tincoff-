@@ -22,18 +22,67 @@ class ViewController: UIViewController {
         "Google": "GOOG",
         "Amazon": "AMZN",
         "Facebook": "FB",
-        ]
+    ]
+    
+    // MARK: - Lifecyrcle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         companyNameLabel.text = "Tinkoff"
+        
         companyPickerView.dataSource = self
         companyPickerView.delegate = self
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        requestQuote(for: "AAPL")
+    }
+    
+    //MARK: - Private
+    
+    private func requestQuote(for symbol: String) {
+        
+        let token = "pk_4335b7641e304f6e8ef89cfe43a99cb4"
+        guard let url = URL(string: "https://cloud.iexapis.com/stable/stock/\(symbol)/quote?token=\(token)") else {
+            return
+        }
+        
+        let dataTask = URLSession.shared.dataTask(with: url) { [ weak self] (data, response, error) in
+            if let data = data,
+               (response as? HTTPURLResponse)?.statusCode == 200,
+               error == nil {
+                self?.parseQuote(from: data)
+            } else {
+                print("Network error!")
+            }
+        }
+        dataTask.resume()
+    }
+    
+    private func parseQuote(from data: Data) {
+        do {
+            let jsonObject = try JSONSerialization.jsonObject(with: data)
+            
+            guard
+                let json = jsonObject as? [String: Any],
+                let companyName = json["companyName"] as? String else { return print("Invalid JSON") }
+            
+            DispatchQueue.main.async { [ weak self ] in
+                self?.displayStockInfo(companyName: companyName)
+            }
+        } catch {
+            print("JSON parsing error: " + error.localizedDescription)
+        }
+    }
+    
+    private func displayStockInfo(companyName: String) {
+        activityIndicator.stopAnimating()
+        companyNameLabel.text = companyName
     }
 }
 
-// MARK: -UIPickerViewDataSourse
+// MARK: - UIPickerViewDataSourse
 
 extension ViewController: UIPickerViewDataSource {
     
