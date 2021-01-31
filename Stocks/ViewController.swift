@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var priceChangeLabel: UILabel!
     
+    @IBOutlet weak var imageView: UIImageView!
+    
     
     // Private
     private lazy var companies = [
@@ -26,6 +28,18 @@ class ViewController: UIViewController {
         "Amazon": "AMZN",
         "Facebook": "FB"
     ]
+    
+    // MARK: (Task 5)
+    private func alertController() {
+        let alertController = UIAlertController(
+            title: "Ошибка!",
+            message: "Отсутствует соединение с интернетом \n Или произошла ошибка сети",
+            preferredStyle: UIAlertController.Style.alert)
+            // добавляем кнопки к всплывающему сообщению
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            // вывод всплывающего окна
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     // MARK: - Lifecyrcle
     
@@ -50,10 +64,12 @@ class ViewController: UIViewController {
         companySymbolLabel.text = "-"
         priceLabel.text = "-"
         priceChangeLabel.text = "-"
+        priceChangeLabel.textColor = .black
         
         let selectedRow = companyPickerView.selectedRow(inComponent: 0)
         let selectedSymbol = Array(companies.values)[selectedRow]
         requestQuote(for: selectedSymbol)
+//        requestQuoteImage(for: selectedSymbol)
     }
 
     
@@ -70,6 +86,7 @@ class ViewController: UIViewController {
                 self?.parseQuote(from: data)
             } else {
                 print("Network error!")
+                DispatchQueue.main.async { self?.alertController() }
             }
         }
         dataTask.resume()
@@ -106,7 +123,33 @@ class ViewController: UIViewController {
         companySymbolLabel.text = companySymbol
         priceLabel.text = "\(price)"
         priceChangeLabel.text = "\(priceChange)"
+        
+//MARK: - (Task 1) Changing color of label text priceChangeLabel
+        switch priceChange {
+        case -priceChange:
+            priceChangeLabel.textColor = .green
+        case +priceChange:
+            priceChangeLabel.textColor = .red
+        default:
+            priceChangeLabel.textColor = .black
+        }
     }
+    
+// MARK:  (Task 2) Не успел разобраться в данной задачей
+//            private func requestQuoteImage(for symbol: String) {
+//                guard let url = URL(string:"https:// storage.googleapis.com/iex/api/logos/{\(symbol)}.png") else {
+//                    return
+//                }
+//
+//                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+//                    guard let data = data, error == nil else { return }
+//
+//                    DispatchQueue.main.async() {    // execute on main thread
+//                        self.imageView.image = UIImage(data: data)
+//                    }
+//                }
+//                task.resume()
+//            }
 }
 
 // MARK: - UIPickerViewDataSourse

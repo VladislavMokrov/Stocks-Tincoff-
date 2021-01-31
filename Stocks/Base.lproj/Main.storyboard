@@ -70,6 +70,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Gxt-kc-Nth">
+                                <rect key="frame" x="156" y="328" width="102" height="80"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -78,11 +81,13 @@
                             <constraint firstItem="P6D-ao-LPr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="4mU-BL-uZM"/>
                             <constraint firstItem="o7c-xb-ve7" firstAttribute="top" secondItem="P6D-ao-LPr" secondAttribute="bottom" constant="40" id="63V-6D-WeJ"/>
                             <constraint firstItem="lMz-8e-tyV" firstAttribute="top" secondItem="bPb-cT-pw3" secondAttribute="bottom" constant="40" id="CWz-Wp-BLV"/>
+                            <constraint firstItem="Gxt-kc-Nth" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="156" id="H82-Gw-mKZ"/>
                             <constraint firstItem="7O3-X2-goC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="HdQ-6r-rUd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PNt-Xy-ZCn" secondAttribute="trailing" constant="40" id="Jlf-g1-aWD"/>
                             <constraint firstItem="PNt-Xy-ZCn" firstAttribute="top" secondItem="lMz-8e-tyV" secondAttribute="bottom" constant="40" id="NWz-7E-CWe"/>
                             <constraint firstItem="akA-9b-mQE" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="O9L-O0-TW8"/>
                             <constraint firstItem="BAP-yU-olE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="PHA-OU-dFG"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Gxt-kc-Nth" secondAttribute="trailing" constant="156" id="UQj-OX-74k"/>
                             <constraint firstItem="bPb-cT-pw3" firstAttribute="top" secondItem="BAP-yU-olE" secondAttribute="bottom" constant="40" id="Zbc-Mq-Buy"/>
                             <constraint firstItem="7O3-X2-goC" firstAttribute="top" secondItem="o7c-xb-ve7" secondAttribute="bottom" constant="40" id="ahZ-tf-ifQ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lMz-8e-tyV" secondAttribute="trailing" constant="40" id="bUQ-dw-ANh"/>
@@ -95,6 +100,8 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bPb-cT-pw3" secondAttribute="trailing" constant="40" id="qI3-GP-7KR"/>
                             <constraint firstItem="Hmu-rN-PJJ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="rEO-Zy-T94"/>
                             <constraint firstItem="o7c-xb-ve7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="tE5-vV-4G4"/>
+                            <constraint firstItem="akA-9b-mQE" firstAttribute="top" secondItem="Gxt-kc-Nth" secondAttribute="bottom" constant="30" id="vBP-sB-bTt"/>
+                            <constraint firstItem="Gxt-kc-Nth" firstAttribute="top" secondItem="FQY-V0-WcC" secondAttribute="bottom" constant="40" id="xoj-sz-H1D"/>
                             <constraint firstItem="akA-9b-mQE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ze9-sg-2Mj"/>
                         </constraints>
                     </view>
@@ -103,13 +110,14 @@
                         <outlet property="companyNameLabel" destination="BAP-yU-olE" id="Vvm-kS-NbT"/>
                         <outlet property="companyPickerView" destination="Hmu-rN-PJJ" id="WOr-S4-UhT"/>
                         <outlet property="companySymbolLabel" destination="bPb-cT-pw3" id="gTF-er-scI"/>
+                        <outlet property="imageView" destination="Gxt-kc-Nth" id="Vmv-Mo-egg"/>
                         <outlet property="priceChangeLabel" destination="PNt-Xy-ZCn" id="P3n-34-Dbp"/>
                         <outlet property="priceLabel" destination="lMz-8e-tyV" id="Y7c-II-Ly7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="49" y="118"/>
+            <point key="canvasLocation" x="47.826086956521742" y="117.85714285714285"/>
         </scene>
     </scenes>
     <resources>
