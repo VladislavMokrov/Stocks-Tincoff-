@@ -13,6 +13,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var companyPickerView: UIPickerView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var companySymbolLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var priceChangeLabel: UILabel!
     
     
     // Private
@@ -21,7 +24,7 @@ class ViewController: UIViewController {
         "Microsoft": "MSFT",
         "Google": "GOOG",
         "Amazon": "AMZN",
-        "Facebook": "FB",
+        "Facebook": "FB"
     ]
     
     // MARK: - Lifecyrcle
@@ -35,20 +38,32 @@ class ViewController: UIViewController {
         companyPickerView.delegate = self
         
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.startAnimating()
-        requestQuote(for: "AAPL")
+        
+        requestQuoteUpdate()
     }
     
     //MARK: - Private
     
-    private func requestQuote(for symbol: String) {
+    private func requestQuoteUpdate() {
+        activityIndicator.startAnimating()
+        companyNameLabel.text = "-"
+        companySymbolLabel.text = "-"
+        priceLabel.text = "-"
+        priceChangeLabel.text = "-"
         
-        let token = "pk_4335b7641e304f6e8ef89cfe43a99cb4"
-        guard let url = URL(string: "https://cloud.iexapis.com/stable/stock/\(symbol)/quote?token=\(token)") else {
+        let selectedRow = companyPickerView.selectedRow(inComponent: 0)
+        let selectedSymbol = Array(companies.values)[selectedRow]
+        requestQuote(for: selectedSymbol)
+    }
+
+    
+    private func requestQuote(for symbol: String) {
+        let token = "pk_f47fe0785a3e474ba243362de79ed172"
+        guard let url = URL(string: "https://cloud.iexapis.com/stable/stock/\(symbol)/quote?&token=\(token)") else {
             return
         }
         
-        let dataTask = URLSession.shared.dataTask(with: url) { [ weak self] (data, response, error) in
+        let dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             if let data = data,
                (response as? HTTPURLResponse)?.statusCode == 200,
                error == nil {
@@ -66,19 +81,31 @@ class ViewController: UIViewController {
             
             guard
                 let json = jsonObject as? [String: Any],
-                let companyName = json["companyName"] as? String else { return print("Invalid JSON") }
+                let companyName = json["companyName"] as? String,
+                let companySymbol = json["symbol"] as? String,
+                let price = json["latestPrice"] as? Double,
+                let priceChange = json["change"] as? Double else { return print("Invalid JSON") }
             
             DispatchQueue.main.async { [ weak self ] in
-                self?.displayStockInfo(companyName: companyName)
+                self?.displayStockInfo(companyName: companyName,
+                                       companySymbol: companySymbol,
+                                       price: price,
+                                       priceChange: priceChange)
             }
         } catch {
             print("JSON parsing error: " + error.localizedDescription)
         }
     }
     
-    private func displayStockInfo(companyName: String) {
+    private func displayStockInfo(companyName: String,
+                                  companySymbol: String,
+                                  price: Double,
+                                  priceChange: Double) {
         activityIndicator.stopAnimating()
         companyNameLabel.text = companyName
+        companySymbolLabel.text = companySymbol
+        priceLabel.text = "\(price)"
+        priceChangeLabel.text = "\(priceChange)"
     }
 }
 
@@ -101,5 +128,9 @@ extension ViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return Array(companies.keys)[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        requestQuoteUpdate()
     }
 }
