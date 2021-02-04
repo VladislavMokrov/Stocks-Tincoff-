@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         let selectedRow = companyPickerView.selectedRow(inComponent: 0)
         let selectedSymbol = Array(companies.values)[selectedRow]
         requestQuote(for: selectedSymbol)
-//        requestQuoteImage(for: selectedSymbol)
+        requestQuoteImage(for: selectedSymbol)
     }
 
     
@@ -126,30 +126,35 @@ class ViewController: UIViewController {
         
 //MARK: - (Task 1) Changing color of label text priceChangeLabel
         switch priceChange {
-        case -priceChange:
+        case 0.001...:
             priceChangeLabel.textColor = .green
-        case +priceChange:
+        case ..<0:
             priceChangeLabel.textColor = .red
         default:
             priceChangeLabel.textColor = .black
         }
     }
     
-// MARK:  (Task 2) Не успел разобраться в данной задачей
-//            private func requestQuoteImage(for symbol: String) {
-//                guard let url = URL(string:"https:// storage.googleapis.com/iex/api/logos/{\(symbol)}.png") else {
-//                    return
-//                }
-//
-//                let task = URLSession.shared.dataTask(with: url) { data, response, error in
-//                    guard let data = data, error == nil else { return }
-//
-//                    DispatchQueue.main.async() {    // execute on main thread
-//                        self.imageView.image = UIImage(data: data)
+ //MARK:  (Task 2) Не успел разобраться в данной задачей
+            private func requestQuoteImage(for symbol: String) {
+                guard let url = URL(string:"https://cloud.iexapis.com/stable/stock/\(symbol)/logo") else {
+                    return //https://storage.googleapis.com/iex/api/logos/{\(symbol)}.png
+                }
+
+                let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                    guard let data = data, error == nil else { return }
+
+                    DispatchQueue.main.async() {    // execute on main thread
+                        self.imageView.image = UIImage(data: data)
+                    }
+                }
+                task.resume()
+//                let url = URL(string:"https://avatars.mds.yandex.net/get-zen_doc/138668/pub_5cc6a72d15df6000b3c21e74_5cc6b8a0cb5a2100b3c4afb4/scale_1200")
+//                    if let data = try? Data(contentsOf: url!)
+//                    {
+//                        imageView.image = UIImage(data: data)
 //                    }
-//                }
-//                task.resume()
-//            }
+            }
 }
 
 // MARK: - UIPickerViewDataSourse
